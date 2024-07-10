@@ -1,4 +1,4 @@
-const descriptionMd = `Next Chakra UI Typescript Template`
+const descriptionMd = `Upcoming Studio`
 
 const description = descriptionMd
   .replace(/\[([^\]]+)\](\([^)]+\)|\[[^\]]+\])/g, '$1')
@@ -7,15 +7,15 @@ const description = descriptionMd
   .trim()
 
 module.exports = {
-  title: 'Nextra',
+  title: 'Adis Studio',
   descriptionMd,
   description,
-  url: 'https://nextra-ts.vercel.app',
-  twitterUsername: '@SeonglaeC',
-  email: 'seongle3737@gmail.com',
+  url: '',
+  twitterUsername: '@adityaredflag',
+  email: 'adi.redflag@gmail.com',
   socials: {
-    GitHub: 'https://github.com/seonglae/nextra',
-    Twitter: 'https://twitter.com/SeonglaeC',
+    GitHub: 'https://github.com/adityaredflag/',
+    Twitter: 'https://twitter.com/adityaredflag',
   },
   bgColor: '#1A202C',
   themeColor: '#46c0aE',
