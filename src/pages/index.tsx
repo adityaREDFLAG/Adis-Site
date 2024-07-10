@@ -27,7 +27,7 @@ const HomePage: NextPage = () => {
               href={siteConfig.socials.GitHub}
               leftIcon={<Icon as={FaGithub} />}
             >
-              View source on GitHub
+              Check it out!
             </Button>
           </WrapItem>
         </Wrap>
