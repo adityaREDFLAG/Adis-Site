@@ -24,7 +24,7 @@ const HomePage: NextPage = () => {
               as="a"
               bgColor={siteConfig.themeColor}
               target="_pblank"
-              href="https://nextra-woad.vercel.app/info"
+              href="/info"
               
             >
               Check it out →
