@@ -23,8 +23,8 @@ const HomePage: NextPage = () => {
             <Button
               as="a"
               bgColor={siteConfig.themeColor}
-              target="_blank"
-              href="https://vercel.app"
+              target="_pblank"
+              href="https://nextra-woad.vercel.app/info"
               
             >
               Check it out →
