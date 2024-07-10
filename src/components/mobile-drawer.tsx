@@ -1,5 +1,5 @@
+// MobileDrawer.tsx (or any main navigation component)
 import * as React from 'react'
-
 import {
   Box,
   Drawer,
@@ -15,12 +15,11 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 import { FaBars, FaTimes } from 'react-icons/fa'
-
 import NextLink from 'next/link'
 import { useSocials } from '@/hooks/app'
 import siteConfig from '~/site-config'
 
-export const MobileDrawer: React.FC = () => {
+const MobileDrawer: React.FC = () => {
   const { isOpen, onClose, onToggle } = useDisclosure()
   const btnRef = React.useRef()
 
@@ -48,6 +47,15 @@ export const MobileDrawer: React.FC = () => {
                 {siteConfig.title}
               </Link>
             </DrawerHeader>
+
+            <DrawerBody>
+              <Stack spacing={4}>
+                <NextLink href="/info" passHref>
+                  <Link onClick={onClose}>Info</Link>
+                </NextLink>
+                {/* Add more navigation items as needed */}
+              </Stack>
+            </DrawerBody>
 
             <DrawerFooter justifyContent="flex-start" px={4} py={8}>
               {socials.map(([href, SocialIcon]) => (
