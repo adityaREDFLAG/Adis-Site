@@ -23,7 +23,6 @@ const HomePage: NextPage = () => {
             <Button
               as="a"
               bgColor={siteConfig.themeColor}
-              target="_pblank"
               href="/info"
               
             >
