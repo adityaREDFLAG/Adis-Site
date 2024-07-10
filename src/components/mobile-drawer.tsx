@@ -1,4 +1,3 @@
-// MobileDrawer.tsx (or any main navigation component)
 import * as React from 'react'
 import {
   Box,
@@ -19,7 +18,7 @@ import NextLink from 'next/link'
 import { useSocials } from '@/hooks/app'
 import siteConfig from '~/site-config'
 
-const MobileDrawer: React.FC = () => {
+export const MobileDrawer: React.FC = () => {
   const { isOpen, onClose, onToggle } = useDisclosure()
   const btnRef = React.useRef()
 
