@@ -24,10 +24,10 @@ const HomePage: NextPage = () => {
               as="a"
               bgColor={siteConfig.themeColor}
               target="_blank"
-              href={siteConfig.socials.GitHub}
-              leftIcon={<Icon as={FaGithub} />}
+              href="https://vercel.app"
+              
             >
-              Check it out!
+              Check it out →
             </Button>
           </WrapItem>
         </Wrap>
