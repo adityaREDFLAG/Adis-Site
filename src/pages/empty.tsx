@@ -1,10 +1,18 @@
 import * as React from 'react'
- import { NextSeo } from 'next-seo'
+import { NextSeo } from 'next-seo'
 
- import type { NextPage } from 'next'
+import type { NextPage } from 'next'
 
- const EmptyPage: NextPage = () => {
-   return <NextSeo title="Empty" />
- }
+const ContentPage: NextPage = () => {
+  return (
+    <>
+      <NextSeo title="Info" />
+      <div>
+        <h1>What's adi's studio</h1>
+        <p>idk</p>
+      </div>
+    </>
+  )
+}
 
- export default EmptyPage
+export default ContentPage
