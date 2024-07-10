@@ -17,6 +17,6 @@ module.exports = {
     GitHub: 'https://github.com/adityaredflag/',
     Twitter: 'https://twitter.com/adityaredflag',
   },
-  bgColor: '#1A202C',
-  themeColor: '#46c0aE',
+  bgColor: '#212121',
+  themeColor: '#FF4545',
 }
