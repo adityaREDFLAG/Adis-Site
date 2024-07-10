@@ -49,10 +49,12 @@ export const MobileDrawer: React.FC = () => {
 
             <DrawerBody>
               <Stack spacing={4}>
+                <NextLink href="/" passHref>
+                  <Link onClick={onClose}>Home</Link>
+                </NextLink>
                 <NextLink href="/info" passHref>
                   <Link onClick={onClose}>Info</Link>
                 </NextLink>
-                {/* Add more navigation items as needed */}
               </Stack>
             </DrawerBody>
 
