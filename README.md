@@ -1,42 +1,10 @@
-# Minimal Next JS Typescript Template
+# Adi's Studio Site
 
-Fork of [Nextplate](https://github.com/nextplate-dev/nextplate)
+## Credits:-
+- [seonglae's template](https://github.com/seonglae/nextra)
+- [Hosting](https://vercel.app)
+- [Nextra](https://nextra.site)
+- [Chakra](https://v2.chakra-ui.com)
 
-- [Vercel Demo](https://nextra-ts.vercel.app)
+### Made with love 💙
 
-![Example Image](image/example.png)
-
-## Get Started
-
-- `Use this template` Button on Github
-- Or Clone this Project
-
-```bash
-git clone https://github.com/seonglae/next-ts-template
-pnpm i
-pnpm dev
-```
-
-## Components
-
-### Modules
-
-- Next js
-- Chakra UI
-
-### Develop Tools
-
-- Prettier
-- CI/CD
-  - Github Action - CI
-  - Vercel - CD
-
-## Publish
-
-- Sitemap
-- PWA
-
-## Philosophy
-
-- Atomic Design Pattern
-- Minimalism
