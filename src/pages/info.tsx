@@ -16,7 +16,7 @@ const ContentPage: NextPage = () => {
             Adi's studio is an upcoming studio! We are currently developing a bot and this site.
           </Text>
           <Link href="/" style={{ textDecoration: 'none' }}>
-            <Button colorScheme={siteConfig.themeColor}>Go Back</Button>
+            <Button colorScheme="#FF4545">Go Back</Button>
           </Link>
         </Box>
       </Center>
