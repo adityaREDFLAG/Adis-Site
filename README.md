@@ -6,5 +6,5 @@
 - [Nextra](https://nextra.site)
 - [Chakra](https://v2.chakra-ui.com)
 
-### Made with love 💙
+### Made with love 💙 in 🇮🇳
 
