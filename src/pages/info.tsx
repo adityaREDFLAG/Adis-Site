@@ -16,19 +16,7 @@ const ContentPage: NextPage = () => {
           <Text fontSize="lg">
             Adi's studio is an upcoming studio! We are currently developing a bot and this site.
           </Text>
-          
-        <Wrap justify="center" spacing={4}>
-          <WrapItem>
-            <Button
-              as="a"
-              bgColor={siteConfig.themeColor}
-              href="/"
-              
-            >
-              Check it out →
-            </Button>
-          </WrapItem>
-        </Wrap>
+        
           
         </Box>
       </Center>
