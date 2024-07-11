@@ -23,9 +23,9 @@ const ContentPage: NextPage = () => {
             bg="transparent"
             border="1px solid"
             borderColor={siteConfig.themeColor}
-            href="/info"
+            href="/"
           >
-            Check it out →
+            Go Back
           </Button>
         </Box>
       </Center>
