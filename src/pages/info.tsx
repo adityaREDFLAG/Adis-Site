@@ -44,7 +44,7 @@ const ContentPage: NextPage = () => {
           </Box>
         </VStack>
 
-        <Box position="fixed" bottom={8} width="100%" textAlign="center">
+        <Box textAlign="center" mt={8}>
           <Link href="/" style={{ textDecoration: 'none' }}>
             <Button backgroundColor="#FF4545" color="white">
               Go Back
