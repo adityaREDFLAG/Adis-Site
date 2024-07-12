@@ -32,7 +32,7 @@ const ContentPage: NextPage = () => {
                 <Image 
                   borderRadius="full" 
                   boxSize="150px" 
-                  src="/favicon.png" 
+                  src="/Owner.png" 
                   alt="Aditya" 
                   mb={4} 
                   mx="auto" // Centers the image horizontally
