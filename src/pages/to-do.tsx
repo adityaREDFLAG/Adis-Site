@@ -12,6 +12,19 @@ const TodoPage: NextPage = () => {
   const [tasks, setTasks] = React.useState<Task[]>([]);
   const [task, setTask] = React.useState<string>('');
 
+  // Load tasks from localStorage on component mount
+  React.useEffect(() => {
+    const storedTasks = localStorage.getItem('tasks');
+    if (storedTasks) {
+      setTasks(JSON.parse(storedTasks));
+    }
+  }, []);
+
+  // Save tasks to localStorage whenever tasks change
+  React.useEffect(() => {
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+  }, [tasks]);
+
   const addTask = () => {
     if (task.trim() !== '') {
       setTasks([...tasks, { text: task, completed: false }]);
