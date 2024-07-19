@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { NextSeo } from 'next-seo';
-import { Center, Box, Heading, Input, Button, VStack, HStack, List, ListItem, Checkbox, IconButton, Text, Link } from '@chakra-ui/react';
-import { CloseIcon } from '@chakra-ui/icons';
+import { Center, Box, Heading, Input, Button, VStack, HStack, List, ListItem, Checkbox, Text, Link } from '@chakra-ui/react';
 import type { NextPage } from 'next';
 
 interface Task {
@@ -71,12 +70,9 @@ const TodoPage: NextPage = () => {
                       {task.text}
                     </Box>
                   </Checkbox>
-                  <IconButton
-                    aria-label="Delete task"
-                    icon={<CloseIcon />}
-                    size="sm"
-                    onClick={() => removeTask(index)}
-                  />
+                  <Button size="sm" colorScheme="red" onClick={() => removeTask(index)}>
+                    Delete
+                  </Button>
                 </ListItem>
               ))}
             </List>
@@ -95,4 +91,4 @@ const TodoPage: NextPage = () => {
   );
 };
 
-export default TodoPage;
+export default TodoPage
