@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { HStack, Link, useColorMode, Menu, MenuButton, MenuList, MenuItem, Button } from '@chakra-ui/react';
+import { HStack, Link, useColorMode, Menu, MenuButton, MenuList, MenuItem, Button, Icon } from '@chakra-ui/react';
+import { FaMoon } from 'react-icons/fa';
 import NextLink from 'next/link';
 import { useSocials } from '@/hooks/app';
 import siteConfig from '~/site-config';
@@ -30,8 +31,8 @@ export const Navbar: React.FC = () => {
           Uptime↗
         </Link>
 
-        <Button onClick={toggleColorMode} variant="link">
-          {colorMode === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
+        <Button onClick={toggleColorMode} variant="link" aria-label="toggle dark mode">
+          <Icon as={FaMoon} boxSize={5} />
         </Button>
       </HStack>
     </HStack>
