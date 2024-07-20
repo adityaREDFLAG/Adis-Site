@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { HStack, Link, useColorMode, VStack, Menu, MenuButton, MenuList, MenuItem, Button } from '@chakra-ui/react';
+import { HStack, Link, useColorMode, Menu, MenuButton, MenuList, MenuItem, Button } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { useSocials } from '@/hooks/app';
 import siteConfig from '~/site-config';
 
 export const Navbar: React.FC = () => {
-  const { toggleColorMode } = useColorMode();
+  const { colorMode, toggleColorMode } = useColorMode();
   const socials = useSocials();
 
   return (
@@ -29,14 +29,10 @@ export const Navbar: React.FC = () => {
         <Link href="https://status.uptime-monitor.io/669b90860cf6e5ca54b87cac?_gl=1*vyk1f*_gcl_au*MjE0NzczNTY0LjE3MjE0NzA4NzU.*_ga*MTg3MTAyMjQwMS4xNzIxNDcwODc1*_ga_Z8TT3FLVJQ*MTcyMTQ3MDg3NC4xLjEuMTcyMTQ3MTA5MS41OC4wLjA." isExternal>
           Uptime↗
         </Link>
-        
-        <IconButton
-          aria-label="toggle dark mode"
-          color="currentColor"
-          icon={<Icon as={FaMoon} boxSize={5} />}
-          onClick={toggleColorMode}
-          variant="link"
-          />
+
+        <Button onClick={toggleColorMode} variant="link">
+          {colorMode === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
+        </Button>
       </HStack>
     </HStack>
   );
