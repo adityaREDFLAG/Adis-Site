@@ -28,7 +28,7 @@ export const Navbar: React.FC = () => {
           />
         ))}
         <Link href="https://status.uptime-monitor.io/669b90860cf6e5ca54b87cac?_gl=1*vyk1f*_gcl_au*MjE0NzczNTY0LjE3MjE0NzA4NzU.*_ga*MTg3MTAyMjQwMS4xNzIxNDcwODc1*_ga_Z8TT3FLVJQ*MTcyMTQ3MDg3NC4xLjEuMTcyMTQ3MTA5MS41OC4wLjA." isExternal>
-          Uptime Status ↗
+          Uptime↗
         </Link>
         <IconButton
           aria-label="toggle dark mode"
