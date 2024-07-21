@@ -5,22 +5,19 @@ import {
   Button,
   Center,
   Heading,
-  HStack,
   Input,
-  Text,
   VStack,
-  useColorMode,
+  HStack,
+  Text,
 } from '@chakra-ui/react';
 import { NextSeo } from 'next-seo';
-import { FaMoon, FaSun } from 'react-icons/fa';
-import { Icon } from '@chakra-ui/react';
 
 const WheelSpinner: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [names, setNames] = useState<string[]>([]);
   const [name, setName] = useState<string>('');
   const [spinning, setSpinning] = useState<boolean>(false);
-  const { colorMode, toggleColorMode } = useColorMode();
+  const [winner, setWinner] = useState<string | null>(null);
 
   const addName = () => {
     if (name.trim() !== '') {
@@ -96,6 +93,11 @@ const WheelSpinner: React.FC = () => {
         requestAnimationFrame(animate);
       } else {
         setSpinning(false);
+        const numSegments = names.length;
+        const winningIndex = Math.floor(
+          (numSegments - (angle % 360) / (360 / numSegments)) % numSegments
+        );
+        setWinner(names[winningIndex]);
       }
     };
 
@@ -110,11 +112,6 @@ const WheelSpinner: React.FC = () => {
     <Center minH="100vh" flexDirection="column" p={8}>
       <NextSeo title="Wheel Spinner" />
       <Heading mb={4}>Wheel Spinner</Heading>
-      <HStack align="start" mb={4} spacing={4}>
-        <Button onClick={toggleColorMode} backgroundColor="#FF4545" color="white">
-          {colorMode === 'light' ? <Icon as={FaMoon} /> : <Icon as={FaSun} />}
-        </Button>
-      </HStack>
       <VStack mb={4} spacing={4}>
         <HStack>
           <Input
@@ -138,6 +135,13 @@ const WheelSpinner: React.FC = () => {
           </Text>
         </Box>
       </Box>
+      {winner && (
+        <Box mt={4} p={4} backgroundColor="#FF4545" color="white" borderRadius="md">
+          <Text fontSize="xl" fontWeight="bold">
+            Winner: {winner}
+          </Text>
+        </Box>
+      )}
     </Center>
   );
 };
