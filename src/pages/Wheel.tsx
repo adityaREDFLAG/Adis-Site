@@ -51,7 +51,7 @@ const WheelSpinner: React.FC = () => {
       );
       ctx.closePath();
 
-      ctx.fillStyle = `hsl(${(360 / numSegments) * index}, 100%, 50%)`;
+      ctx.fillStyle = `hsl(${(360 / numSegments) * index}, 70%, 60%)`;
       ctx.fill();
 
       ctx.save();
@@ -63,6 +63,7 @@ const WheelSpinner: React.FC = () => {
       );
       ctx.rotate(angle + angleStep / 2 + Math.PI / 2);
       ctx.fillStyle = 'white';
+      ctx.font = 'bold 14px Arial';
       ctx.fillText(name, -ctx.measureText(name).width / 2, 0);
       ctx.restore();
     });
