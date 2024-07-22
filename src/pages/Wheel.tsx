@@ -64,10 +64,10 @@ const WheelSpinner: React.FC = () => {
       ctx.save();
       ctx.translate(canvas.width / 2, canvas.height / 2);
       ctx.rotate(angle + angleStep / 2);
-      ctx.textAlign = 'right';
+      ctx.textAlign = 'center';
       ctx.fillStyle = 'white';
       ctx.font = 'bold 14px Arial';
-      ctx.fillText(name, canvas.width / 2 - 10, 10);
+      ctx.fillText(name, 0, -canvas.height / 2 + 20);
       ctx.restore();
     });
 
@@ -150,7 +150,6 @@ const WheelSpinner: React.FC = () => {
           ref={canvasRef}
           width={500}
           height={500}
-          style={{ transition: 'transform 3s ease-out', transform: `rotate(${rotation}deg)` }}
         />
         <Box position="absolute" top="50%" left="50%" transform="translate(-50%, -50%)">
           <Text fontSize="2xl" fontWeight="bold" color="#FF4545">
@@ -169,4 +168,4 @@ const WheelSpinner: React.FC = () => {
   );
 };
 
-export default WheelSpinner //revert to 1st version :(
+export default WheelSpinner
