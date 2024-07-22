@@ -100,8 +100,8 @@ const WheelSpinner: React.FC = () => {
 
   return (
     <Center minH="100vh" flexDirection="column" p={8}>
-      <NextSeo title="Spinner Wheel" />
-      <Heading mb={4}>Spinner Wheel</Heading>
+      <NextSeo title="Wheel Spinner" />
+      <Heading mb={4}>Wheel Spinner</Heading>
       <VStack mb={4} spacing={4}>
         <HStack>
           <Input
@@ -124,32 +124,17 @@ const WheelSpinner: React.FC = () => {
           height={500}
           style={{ transition: 'transform 3s ease-out', transform: `rotate(${rotation}deg)` }}
         />
-        <Box position="absolute" top="50%" left="50%" transform="translate(-50%, -50%)">
-          <Box
-            position="relative"
-            width="0"
-            height="0"
-            borderLeft="25px solid transparent"
-            borderRight="25px solid transparent"
-            borderBottom="50px solid #FF4545"
-            transform="translateY(-250px) rotate(0deg)"
-          >
-            <Box
-              position="absolute"
-              top="0"
-              left="0"
-              right="0"
-              bottom="0"
-              margin="auto"
-              width="0"
-              height="0"
-              borderLeft="12px solid transparent"
-              borderRight="12px solid transparent"
-              borderBottom="25px solid white"
-              transform="translateY(50px)"
-            />
-          </Box>
-        </Box>
+        <Box
+          position="absolute"
+          top="10px"
+          left="50%"
+          transform="translateX(-50%)"
+          width="0"
+          height="0"
+          borderLeft="20px solid transparent"
+          borderRight="20px solid transparent"
+          borderBottom="40px solid #FF4545"
+        />
         {winner && (
           <Text fontSize="2xl" fontWeight="bold" color="#FF4545" mt={4}>
             Winner: {winner}
