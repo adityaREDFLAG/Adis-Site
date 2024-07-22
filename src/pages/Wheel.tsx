@@ -13,7 +13,7 @@ import {
   ListItem,
   IconButton,
 } from '@chakra-ui/react';
-import { DeleteIcon } import from '@chakra-ui/react'
+import { DeleteIcon } from '@chakra-ui/icons';
 import { NextSeo } from 'next-seo';
 
 const WheelSpinner: React.FC = () => {
