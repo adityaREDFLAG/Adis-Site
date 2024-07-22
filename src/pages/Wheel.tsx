@@ -160,4 +160,4 @@ const WheelSpinner: React.FC = () => {
   );
 };
 
-export default SpinnerWheel
+export default WheelSpinner
