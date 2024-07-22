@@ -13,6 +13,7 @@ import {
   ListItem,
   IconButton,
 } from '@chakra-ui/react';
+import { DeleteIcon } import from '@chakra-ui/react'
 import { NextSeo } from 'next-seo';
 
 const WheelSpinner: React.FC = () => {
@@ -141,8 +142,11 @@ const WheelSpinner: React.FC = () => {
             <Text flex="1">{name}</Text>
             <IconButton
               aria-label={`Remove ${name}`}
+              icon={<DeleteIcon />}
               size="sm"
               onClick={() => removeName(name)}
+              backgroundColor="#FF4545"
+              color="white"
             />
           </ListItem>
         ))}
