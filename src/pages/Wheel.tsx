@@ -105,6 +105,9 @@ const WheelSpinner: React.FC = () => {
           (numSegments - (angle % 360) / (360 / numSegments)) % numSegments
         );
         setWinner(names[winningIndex]);
+
+        const finalAngle = (360 - (angle % 360)) + 90; // Adjust the final angle to ensure the winning segment is at the top
+        canvas.style.transform = `rotate(${finalAngle}deg)`;
       }
     };
 
@@ -152,7 +155,7 @@ const WheelSpinner: React.FC = () => {
       </List>
       <Box position="relative">
         <canvas ref={canvasRef} width={500} height={500} style={{ transition: 'transform 3s ease-out' }} />
-        <Box position="absolute" top="50%" left="50%" transform="translate(-50%, -50%)">
+        <Box position="absolute" top="50%" left="50%" transform="translate(-50%, -50%) rotate(90deg)">
           <Text fontSize="lg" fontWeight="bold">
             ▼
           </Text>
