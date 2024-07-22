@@ -1,15 +1,6 @@
 import * as React from 'react';
 import { useRef, useState, useEffect } from 'react';
-import {
-  Box,
-  Button,
-  Center,
-  Heading,
-  Input,
-  VStack,
-  HStack,
-  Text,
-} from '@chakra-ui/react';
+import { Box, Button, Center, Heading, Input, VStack, HStack, Text } from '@chakra-ui/react';
 import { NextSeo } from 'next-seo';
 
 const WheelSpinner: React.FC = () => {
@@ -74,9 +65,6 @@ const WheelSpinner: React.FC = () => {
     if (spinning) return;
     setSpinning(true);
 
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
     const spinDuration = 3000; // duration of the spin in ms
     const spinAngle = Math.random() * 360 + 720; // random angle between 720 and 1080 degrees
 
@@ -99,7 +87,7 @@ const WheelSpinner: React.FC = () => {
         const winningIndex = Math.floor(
           ((angle % 360) / 360) * numSegments
         );
-        setWinner(names[winningIndex]);
+        setWinner(names[(numSegments - winningIndex) % numSegments]);
       }
     };
 
@@ -112,8 +100,8 @@ const WheelSpinner: React.FC = () => {
 
   return (
     <Center minH="100vh" flexDirection="column" p={8}>
-      <NextSeo title="Wheel Spinner" />
-      <Heading mb={4}>Wheel Spinner</Heading>
+      <NextSeo title="Spinner Wheel" />
+      <Heading mb={4}>Spinner Wheel</Heading>
       <VStack mb={4} spacing={4}>
         <HStack>
           <Input
@@ -137,20 +125,39 @@ const WheelSpinner: React.FC = () => {
           style={{ transition: 'transform 3s ease-out', transform: `rotate(${rotation}deg)` }}
         />
         <Box position="absolute" top="50%" left="50%" transform="translate(-50%, -50%)">
-          <Text fontSize="2xl" fontWeight="bold" color="#FF4545">
-            ▼
-          </Text>
+          <Box
+            position="relative"
+            width="0"
+            height="0"
+            borderLeft="25px solid transparent"
+            borderRight="25px solid transparent"
+            borderBottom="50px solid #FF4545"
+            transform="translateY(-250px) rotate(0deg)"
+          >
+            <Box
+              position="absolute"
+              top="0"
+              left="0"
+              right="0"
+              bottom="0"
+              margin="auto"
+              width="0"
+              height="0"
+              borderLeft="12px solid transparent"
+              borderRight="12px solid transparent"
+              borderBottom="25px solid white"
+              transform="translateY(50px)"
+            />
+          </Box>
         </Box>
-      </Box>
-      {winner && (
-        <Box mt={4} p={4} backgroundColor="#FF4545" color="white" borderRadius="md">
-          <Text fontSize="xl" fontWeight="bold">
+        {winner && (
+          <Text fontSize="2xl" fontWeight="bold" color="#FF4545" mt={4}>
             Winner: {winner}
           </Text>
-        </Box>
-      )}
+        )}
+      </Box>
     </Center>
   );
 };
 
-export default WheelSpinner
+export default SpinnerWheel
