@@ -1,13 +1,24 @@
-import * as React from 'react'; //idk really what i am doing lol
-import { useRef, useState, useEffect } from 'react'; 
-import { Box, Button, Center, Heading, Input, VStack, HStack, Text } from '@chakra-ui/react';
+import * as React from 'react';
+import { useRef, useState, useEffect } from 'react';
+import {
+  Box,
+  Button,
+  Center,
+  Heading,
+  Input,
+  VStack,
+  HStack,
+  Text,
+} from '@chakra-ui/react';
 import { NextSeo } from 'next-seo';
 
 const WheelSpinner: React.FC = () => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [names, setNames] = useState<string[]>([]);
   const [name, setName] = useState<string>('');
-  const [winner, setWinner] = useState<string>('');
+  const [spinning, setSpinning] = useState<boolean>(false);
+  const [winner, setWinner] = useState<string | null>(null);
+  const [rotation, setRotation] = useState<number>(0);
 
   const addName = () => {
     if (name.trim() !== '') {
@@ -16,89 +27,83 @@ const WheelSpinner: React.FC = () => {
     }
   };
 
-  const removeName = (nameToRemove: string) => {
-    setNames(names.filter((n) => n !== nameToRemove));
-  };
-
   const drawWheel = () => {
     const canvas = canvasRef.current;
-    if (canvas && names.length > 0) {
-      const ctx = canvas.getContext('2d');
-      if (ctx) {
-        const numOfNames = names.length;
-        const angle = (2 * Math.PI) / numOfNames;
-        const radius = canvas.width / 2;
-        const colors = ['#FF6F61', '#6B5B95', '#88B04B', '#F7CAC9', '#92A8D1', '#955251', '#B565A7', '#009B77'];
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
 
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        names.forEach((name, index) => {
-          const startAngle = index * angle;
-          const endAngle = startAngle + angle;
-          ctx.beginPath();
-          ctx.moveTo(radius, radius);
-          ctx.arc(radius, radius, radius, startAngle, endAngle);
-          ctx.fillStyle = colors[index % colors.length];
-          ctx.fill();
-          ctx.stroke();
+    const numSegments = names.length;
+    const angleStep = (2 * Math.PI) / numSegments;
 
-          ctx.save();
-          ctx.translate(radius, radius);
-          ctx.rotate(startAngle + angle / 2);
-          ctx.textAlign = 'right';
-          ctx.fillStyle = '#000000';
-          ctx.font = '16px Arial';
-          ctx.fillText(name, radius - 10, 10);
-          ctx.restore();
-        });
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        // Draw the arrow
-        ctx.beginPath();
-        ctx.moveTo(radius, 0);
-        ctx.lineTo(radius - 15, 30);
-        ctx.lineTo(radius + 15, 30);
-        ctx.closePath();
-        ctx.fillStyle = '#FFFFFF';
-        ctx.fill();
-      }
-    }
+    names.forEach((name, index) => {
+      const angle = index * angleStep;
+
+      ctx.beginPath();
+      ctx.moveTo(canvas.width / 2, canvas.height / 2);
+      ctx.arc(
+        canvas.width / 2,
+        canvas.height / 2,
+        canvas.width / 2,
+        angle,
+        angle + angleStep
+      );
+      ctx.closePath();
+
+      ctx.fillStyle = `hsl(${(360 / numSegments) * index}, 70%, 60%)`;
+      ctx.fill();
+
+      ctx.save();
+      ctx.translate(
+        canvas.width / 2 +
+          (canvas.width / 2.5) * Math.cos(angle + angleStep / 2),
+        canvas.height / 2 +
+          (canvas.height / 2.5) * Math.sin(angle + angleStep / 2)
+      );
+      ctx.rotate(angle + angleStep / 2 + Math.PI / 2);
+      ctx.fillStyle = 'white';
+      ctx.font = 'bold 14px Arial';
+      ctx.fillText(name, -ctx.measureText(name).width / 2, 0);
+      ctx.restore();
+    });
   };
 
   const spinWheel = () => {
-    if (names.length > 0) {
-      const randomIndex = Math.floor(Math.random() * names.length);
-      setWinner(names[randomIndex]);
-      const canvas = canvasRef.current;
-      if (canvas) {
-        const ctx = canvas.getContext('2d');
-        if (ctx) {
-          const totalSpins = 5; // Total spins before stopping
-          const spinDuration = 4000; // Total spin duration in ms
-          const start = performance.now();
+    if (spinning) return;
+    setSpinning(true);
 
-          const animate = (time: number) => {
-            const elapsed = time - start;
-            const progress = Math.min(elapsed / spinDuration, 1);
-            const angle = (progress * totalSpins * 2 * Math.PI) + (2 * Math.PI / names.length * randomIndex);
+    const canvas = canvasRef.current;
+    if (!canvas) return;
 
-            ctx.save();
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.translate(canvas.width / 2, canvas.height / 2);
-            ctx.rotate(angle);
-            ctx.translate(-canvas.width / 2, -canvas.height / 2);
-            drawWheel();
-            ctx.restore();
+    const spinDuration = 3000; // duration of the spin in ms
+    const spinAngle = Math.random() * 360 + 720; // random angle between 720 and 1080 degrees
 
-            if (progress < 1) {
-              requestAnimationFrame(animate);
-            } else {
-              setWinner(names[randomIndex]);
-            }
-          };
+    let start = 0;
 
-          requestAnimationFrame(animate);
-        }
+    const animate = (timestamp: number) => {
+      if (!start) start = timestamp;
+      const elapsed = timestamp - start;
+      const progress = Math.min(elapsed / spinDuration, 1);
+      const easing = progress * (2 - progress);
+      const angle = easing * spinAngle;
+
+      setRotation(angle);
+
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      } else {
+        setSpinning(false);
+        const numSegments = names.length;
+        const winningIndex = Math.floor(
+          ((angle % 360) / 360) * numSegments
+        );
+        setWinner(names[winningIndex]);
       }
-    }
+    };
+
+    requestAnimationFrame(animate);
   };
 
   useEffect(() => {
@@ -106,57 +111,46 @@ const WheelSpinner: React.FC = () => {
   }, [names]);
 
   return (
-    <>
-      <NextSeo title="Wheel Spinner" titleTemplate="%s" />
-      <Center minH="100vh" flexDirection="column" p={8}>
-        <Box textAlign="center" p={4} mb={8}>
-          <Heading as="h1" size="xl" mb={4}>
-            Wheel Spinner
-          </Heading>
-          <Text fontSize="lg" mb={6}>
-            Add names and spin the wheel to pick a winner!
+    <Center minH="100vh" flexDirection="column" p={8}>
+      <NextSeo title="Wheel Spinner" />
+      <Heading mb={4}>Wheel Spinner</Heading>
+      <VStack mb={4} spacing={4}>
+        <HStack>
+          <Input
+            placeholder="Enter a name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+          <Button onClick={addName} backgroundColor="#FF4545" color="white">
+            Add Name
+          </Button>
+        </HStack>
+        <Button onClick={spinWheel} isDisabled={spinning} backgroundColor="#FF4545" color="white">
+          Spin Wheel
+        </Button>
+      </VStack>
+      <Box position="relative">
+        <canvas
+          ref={canvasRef}
+          width={500}
+          height={500}
+          style={{ transition: 'transform 3s ease-out', transform: `rotate(${rotation}deg)` }}
+        />
+        <Box position="absolute" top="50%" left="50%" transform="translate(-50%, -50%)">
+          <Text fontSize="2xl" fontWeight="bold" color="#FF4545">
+            ▼
           </Text>
         </Box>
-
-        <VStack spacing={8} maxW="container.md" align="center">
-          <Box textAlign="left" width="100%">
-            <HStack>
-              <Input
-                placeholder="Enter a name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-              <Button onClick={addName} backgroundColor="#FF6F61" color="white">
-                Add Name
-              </Button>
-            </HStack>
-            {names.map((name) => (
-              <HStack key={name} justifyContent="space-between" mt={2}>
-                <Text>{name}</Text>
-                <Button size="sm" colorScheme="red" onClick={() => removeName(name)}>
-                  Remove
-                </Button>
-              </HStack>
-            ))}
-          </Box>
-
-          <canvas ref={canvasRef} width={300} height={300} style={{ border: '2px solid #FFFFFF' }} />
-
-          <Button onClick={spinWheel} backgroundColor="#FF6F61" color="white">
-            Spin Wheel
-          </Button>
-
-          {winner && (
-            <Box textAlign="center" mt={4}>
-              <Text fontSize="2xl" fontWeight="bold">
-                Winner: {winner}
-              </Text>
-            </Box>
-          )}
-        </VStack>
-      </Center>
-    </>
+      </Box>
+      {winner && (
+        <Box mt={4} p={4} backgroundColor="#FF4545" color="white" borderRadius="md">
+          <Text fontSize="xl" fontWeight="bold">
+            Winner: {winner}
+          </Text>
+        </Box>
+      )}
+    </Center>
   );
 };
 
-export default WheelSpinner
+export default WheelSpinner //revert to 1st version :(
