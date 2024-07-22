@@ -27,88 +27,97 @@ const WheelSpinner: React.FC = () => {
     }
   };
 
-  const drawWheel = () => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
+const drawWheel = () => {
+  const canvas = canvasRef.current;
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
 
-    const numSegments = names.length;
-    const angleStep = (2 * Math.PI) / numSegments;
+  const numSegments = names.length;
+  const angleStep = (2 * Math.PI) / numSegments;
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    names.forEach((name, index) => {
-      const angle = index * angleStep;
+  names.forEach((name, index) => {
+    const angle = index * angleStep;
 
-      ctx.beginPath();
-      ctx.moveTo(canvas.width / 2, canvas.height / 2);
-      ctx.arc(
-        canvas.width / 2,
-        canvas.height / 2,
-        canvas.width / 2,
-        angle,
-        angle + angleStep
-      );
-      ctx.closePath();
+    ctx.beginPath();
+    ctx.moveTo(canvas.width / 2, canvas.height / 2);
+    ctx.arc(
+      canvas.width / 2,
+      canvas.height / 2,
+      canvas.width / 2,
+      angle,
+      angle + angleStep
+    );
+    ctx.closePath();
 
-      ctx.fillStyle = `hsl(${(360 / numSegments) * index}, 70%, 60%)`;
-      ctx.fill();
+    ctx.fillStyle = `hsl(${(360 / numSegments) * index}, 70%, 60%)`;
+    ctx.fill();
 
-      ctx.save();
-      ctx.translate(
-        canvas.width / 2 +
-          (canvas.width / 2.5) * Math.cos(angle + angleStep / 2),
-        canvas.height / 2 +
-          (canvas.height / 2.5) * Math.sin(angle + angleStep / 2)
-      );
-      ctx.rotate(angle + angleStep / 2 + Math.PI / 2);
-      ctx.fillStyle = 'white';
-      ctx.font = 'bold 14px Arial';
-      ctx.fillText(name, -ctx.measureText(name).width / 2, 0);
-      ctx.restore();
-    });
-  };
+    ctx.save();
+    ctx.translate(
+      canvas.width / 2,
+      canvas.height / 2
+    );
+    ctx.rotate(angle + angleStep / 2);
+    ctx.textAlign = 'right';
+    ctx.fillStyle = 'white';
+    ctx.font = 'bold 14px Arial';
+    ctx.fillText(name, canvas.width / 2 - 10, 10);
+    ctx.restore();
+  });
+
+  // Draw the arrow
+  ctx.save();
+  ctx.translate(canvas.width / 2, canvas.height / 2);
+  ctx.rotate(rotation * Math.PI / 180); // Convert rotation from degrees to radians
+  ctx.beginPath();
+  ctx.moveTo(0, -canvas.height / 2);
+  ctx.lineTo(-15, -canvas.height / 2 + 30);
+  ctx.lineTo(15, -canvas.height / 2 + 30);
+  ctx.closePath();
+  ctx.fillStyle = '#FFFFFF';
+  ctx.fill();
+  ctx.restore();
+};
+
 
   const spinWheel = () => {
-    if (spinning) return;
-    setSpinning(true);
+  if (spinning) return;
+  setSpinning(true);
 
-    const canvas = canvasRef.current;
-    if (!canvas) return;
+  const canvas = canvasRef.current;
+  if (!canvas) return;
 
-    const spinDuration = 3000; // duration of the spin in ms
-    const spinAngle = Math.random() * 360 + 720; // random angle between 720 and 1080 degrees
+  const spinDuration = 3000; // duration of the spin in ms
+  const spinAngle = Math.random() * 360 + 720; // random angle between 720 and 1080 degrees
 
-    let start = 0;
+  let start = 0;
 
-    const animate = (timestamp: number) => {
-      if (!start) start = timestamp;
-      const elapsed = timestamp - start;
-      const progress = Math.min(elapsed / spinDuration, 1);
-      const easing = progress * (2 - progress);
-      const angle = easing * spinAngle;
+  const animate = (timestamp: number) => {
+    if (!start) start = timestamp;
+    const elapsed = timestamp - start;
+    const progress = Math.min(elapsed / spinDuration, 1);
+    const easing = progress * (2 - progress);
+    const angle = easing * spinAngle;
 
-      setRotation(angle);
+    setRotation(angle);
 
-      if (progress < 1) {
-        requestAnimationFrame(animate);
-      } else {
-        setSpinning(false);
-        const numSegments = names.length;
-        const winningIndex = Math.floor(
-          ((angle % 360) / 360) * numSegments
-        );
-        setWinner(names[winningIndex]);
-      }
-    };
-
-    requestAnimationFrame(animate);
+    if (progress < 1) {
+      requestAnimationFrame(animate);
+    } else {
+      setSpinning(false);
+      const numSegments = names.length;
+      const winningIndex = Math.floor(
+        ((angle % 360) / 360) * numSegments
+      );
+      setWinner(names[winningIndex]);
+    }
   };
 
-  useEffect(() => {
-    drawWheel();
-  }, [names]);
+  requestAnimationFrame(animate);
+};
 
   return (
     <Center minH="100vh" flexDirection="column" p={8}>
