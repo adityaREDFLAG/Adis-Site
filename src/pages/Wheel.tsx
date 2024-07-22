@@ -18,7 +18,6 @@ const WheelSpinner: React.FC = () => {
   const [name, setName] = useState<string>('');
   const [spinning, setSpinning] = useState<boolean>(false);
   const [winner, setWinner] = useState<string | null>(null);
-  const [rotation, setRotation] = useState<number>(0);
 
   const addName = () => {
     if (name.trim() !== '') {
@@ -38,12 +37,6 @@ const WheelSpinner: React.FC = () => {
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Rotate the entire wheel
-    ctx.save();
-    ctx.translate(canvas.width / 2, canvas.height / 2);
-    ctx.rotate(rotation * Math.PI / 180); // Rotate by the current rotation state
-    ctx.translate(-canvas.width / 2, -canvas.height / 2);
-
     names.forEach((name, index) => {
       const angle = index * angleStep;
 
@@ -62,28 +55,18 @@ const WheelSpinner: React.FC = () => {
       ctx.fill();
 
       ctx.save();
-      ctx.translate(canvas.width / 2, canvas.height / 2);
-      ctx.rotate(angle + angleStep / 2);
-      ctx.textAlign = 'center';
+      ctx.translate(
+        canvas.width / 2 +
+          (canvas.width / 2.5) * Math.cos(angle + angleStep / 2),
+        canvas.height / 2 +
+          (canvas.height / 2.5) * Math.sin(angle + angleStep / 2)
+      );
+      ctx.rotate(angle + angleStep / 2 + Math.PI / 2);
       ctx.fillStyle = 'white';
       ctx.font = 'bold 14px Arial';
-      ctx.fillText(name, 0, -canvas.height / 2 + 20);
+      ctx.fillText(name, -ctx.measureText(name).width / 2, 0);
       ctx.restore();
     });
-
-    ctx.restore(); // Restore to remove rotation effect for the arrow
-
-    // Draw the arrow at the top
-    ctx.save();
-    ctx.translate(canvas.width / 2, canvas.height / 2);
-    ctx.beginPath();
-    ctx.moveTo(0, -canvas.height / 2);
-    ctx.lineTo(-15, -canvas.height / 2 + 30);
-    ctx.lineTo(15, -canvas.height / 2 + 30);
-    ctx.closePath();
-    ctx.fillStyle = '#FFFFFF';
-    ctx.fill();
-    ctx.restore();
   };
 
   const spinWheel = () => {
@@ -105,7 +88,7 @@ const WheelSpinner: React.FC = () => {
       const easing = progress * (2 - progress);
       const angle = easing * spinAngle;
 
-      setRotation(angle);
+      canvas.style.transform = `rotate(${angle}deg)`;
 
       if (progress < 1) {
         requestAnimationFrame(animate);
@@ -113,7 +96,7 @@ const WheelSpinner: React.FC = () => {
         setSpinning(false);
         const numSegments = names.length;
         const winningIndex = Math.floor(
-          ((angle % 360) / 360) * numSegments
+          (numSegments - (angle % 360) / (360 / numSegments)) % numSegments
         );
         setWinner(names[winningIndex]);
       }
@@ -124,7 +107,7 @@ const WheelSpinner: React.FC = () => {
 
   useEffect(() => {
     drawWheel();
-  }, [names, rotation]);
+  }, [names]);
 
   return (
     <Center minH="100vh" flexDirection="column" p={8}>
@@ -146,13 +129,9 @@ const WheelSpinner: React.FC = () => {
         </Button>
       </VStack>
       <Box position="relative">
-        <canvas
-          ref={canvasRef}
-          width={500}
-          height={500}
-        />
+        <canvas ref={canvasRef} width={500} height={500} style={{ transition: 'transform 3s ease-out' }} />
         <Box position="absolute" top="50%" left="50%" transform="translate(-50%, -50%)">
-          <Text fontSize="2xl" fontWeight="bold" color="#FF4545">
+          <Text fontSize="lg" fontWeight="bold">
             ▼
           </Text>
         </Box>
