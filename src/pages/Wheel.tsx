@@ -18,6 +18,7 @@ const WheelSpinner: React.FC = () => {
   const [name, setName] = useState<string>('');
   const [spinning, setSpinning] = useState<boolean>(false);
   const [winner, setWinner] = useState<string | null>(null);
+  const [rotation, setRotation] = useState<number>(0);
 
   const addName = () => {
     if (name.trim() !== '') {
@@ -88,7 +89,7 @@ const WheelSpinner: React.FC = () => {
       const easing = progress * (2 - progress);
       const angle = easing * spinAngle;
 
-      canvas.style.transform = `rotate(${angle}deg)`;
+      setRotation(angle);
 
       if (progress < 1) {
         requestAnimationFrame(animate);
@@ -96,7 +97,7 @@ const WheelSpinner: React.FC = () => {
         setSpinning(false);
         const numSegments = names.length;
         const winningIndex = Math.floor(
-          (numSegments - (angle % 360) / (360 / numSegments)) % numSegments
+          ((angle % 360) / 360) * numSegments
         );
         setWinner(names[winningIndex]);
       }
@@ -129,9 +130,14 @@ const WheelSpinner: React.FC = () => {
         </Button>
       </VStack>
       <Box position="relative">
-        <canvas ref={canvasRef} width={500} height={500} style={{ transition: 'transform 3s ease-out' }} />
+        <canvas
+          ref={canvasRef}
+          width={500}
+          height={500}
+          style={{ transition: 'transform 3s ease-out', transform: `rotate(${rotation}deg)` }}
+        />
         <Box position="absolute" top="50%" left="50%" transform="translate(-50%, -50%)">
-          <Text fontSize="lg" fontWeight="bold">
+          <Text fontSize="2xl" fontWeight="bold" color="#FF4545">
             ▼
           </Text>
         </Box>
