@@ -1,4 +1,5 @@
-import * as React, { useRef, useState, useEffect } from 'react';
+import * as React from 'react'; //idk really what i am doing lol
+import { useRef, useState, useEffect } from 'react'; 
 import { Box, Button, Center, Heading, Input, VStack, HStack, Text } from '@chakra-ui/react';
 import { NextSeo } from 'next-seo';
 
