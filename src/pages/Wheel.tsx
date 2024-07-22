@@ -9,7 +9,11 @@ import {
   VStack,
   HStack,
   Text,
+  List,
+  ListItem,
+  IconButton,
 } from '@chakra-ui/react';
+import { CloseIcon } from '@chakra-ui/icons';
 import { NextSeo } from 'next-seo';
 
 const WheelSpinner: React.FC = () => {
@@ -24,6 +28,10 @@ const WheelSpinner: React.FC = () => {
       setNames([...names, name]);
       setName('');
     }
+  };
+
+  const removeName = (nameToRemove: string) => {
+    setNames(names.filter((n) => n !== nameToRemove));
   };
 
   const drawWheel = () => {
@@ -128,6 +136,19 @@ const WheelSpinner: React.FC = () => {
           Spin Wheel
         </Button>
       </VStack>
+      <List spacing={3} mb={4}>
+        {names.map((name, index) => (
+          <ListItem key={index} display="flex" alignItems="center">
+            <Text flex="1">{name}</Text>
+            <IconButton
+              aria-label={`Remove ${name}`}
+              icon={<CloseIcon />}
+              size="sm"
+              onClick={() => removeName(name)}
+            />
+          </ListItem>
+        ))}
+      </List>
       <Box position="relative">
         <canvas ref={canvasRef} width={500} height={500} style={{ transition: 'transform 3s ease-out' }} />
         <Box position="absolute" top="50%" left="50%" transform="translate(-50%, -50%)">
