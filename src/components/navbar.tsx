@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { HStack, Link, useColorMode, Menu, MenuButton, MenuList, MenuItem, Button, Icon } from '@chakra-ui/react';
-import { FaMoon, FaSun } from 'react-icons/fa';  // Import both icons
+import { FaMoon, FaSun } from 'react-icons/fa'; // Import both icons
 import NextLink from 'next/link';
 import { useSocials } from '@/hooks/app';
 import siteConfig from '~/site-config';
@@ -23,6 +23,12 @@ export const Navbar: React.FC = () => {
           <MenuList>
             <NextLink href="/to-do" passHref>
               <MenuItem as={Link}>To-Do↗</MenuItem>
+            </NextLink>
+            <NextLink href="/hort" passHref>
+              <MenuItem as={Link}>Heads or Tails↗</MenuItem>
+            </NextLink>
+            <NextLink href="/Wheel" passHref>
+              <MenuItem as={Link}>Spinner Wheel↗</MenuItem>
             </NextLink>
           </MenuList>
         </Menu>
