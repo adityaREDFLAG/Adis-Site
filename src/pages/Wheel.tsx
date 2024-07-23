@@ -73,6 +73,18 @@ const WheelSpinner: React.FC = () => {
       ctx.fillText(name, -ctx.measureText(name).width / 2, 0);
       ctx.restore();
     });
+
+    drawArrow(ctx, canvas);
+  };
+
+  const drawArrow = (ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) => {
+    ctx.fillStyle = 'black';
+    ctx.beginPath();
+    ctx.moveTo(canvas.width / 2 - 10, 10);
+    ctx.lineTo(canvas.width / 2 + 10, 10);
+    ctx.lineTo(canvas.width / 2, 30);
+    ctx.closePath();
+    ctx.fill();
   };
 
   const spinWheel = () => {
@@ -106,7 +118,8 @@ const WheelSpinner: React.FC = () => {
         );
         setWinner(names[winningIndex]);
 
-        const finalAngle = (360 - (angle % 360)) + 90; // Adjust the final angle to ensure the winning segment is at the top
+        // Ensure the arrow points to the winning segment
+        const finalAngle = angle + (360 / numSegments) * winningIndex;
         canvas.style.transform = `rotate(${finalAngle}deg)`;
       }
     };
@@ -155,10 +168,8 @@ const WheelSpinner: React.FC = () => {
       </List>
       <Box position="relative">
         <canvas ref={canvasRef} width={500} height={500} style={{ transition: 'transform 3s ease-out' }} />
-        <Box position="absolute" top="50%" left="50%" transform="translate(-50%, -50%) rotate(90deg)">
-          <Text fontSize="lg" fontWeight="bold">
-            ▼
-          </Text>
+        <Box position="absolute" top="10px" left="50%" transform="translateX(-50%)">
+          <Box width="0" height="0" borderLeft="10px solid transparent" borderRight="10px solid transparent" borderBottom="20px solid black"></Box>
         </Box>
       </Box>
       {winner && (
