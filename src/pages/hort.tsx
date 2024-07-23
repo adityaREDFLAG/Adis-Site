@@ -15,33 +15,39 @@ const HeadsOrTails: React.FC = () => {
   const [spinning, setSpinning] = useState<boolean>(false);
   const [outcome, setOutcome] = useState<string | null>(null);
 
-  const headsImage = new Image();
-  headsImage.src = 'Heads.png';
+  useEffect(() => {
+    if (outcome) {
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
 
-  const tailsImage = new Image();
-  tailsImage.src = 'Tails.png';
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  const drawCoin = (outcome: string) => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
+      const headsImage = new Image();
+      const tailsImage = new Image();
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+      headsImage.src = '/Heads.png';
+      tailsImage.src = '/Tails.png';
 
-    const image = outcome === 'Heads' ? headsImage : tailsImage;
+      const image = outcome === 'Heads' ? headsImage : tailsImage;
 
-    // Draw the coin image
-    ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+      image.onload = () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        // Draw the coin image
+        ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
 
-    // Add blur effect
-    ctx.filter = 'blur(2px)';
+        // Add blur effect
+        ctx.filter = 'blur(2px)';
 
-    // Draw the text
-    ctx.fillStyle = 'white';
-    ctx.font = 'bold 50px Arial';
-    ctx.fillText(outcome, canvas.width / 2 - ctx.measureText(outcome).width / 2, canvas.height / 2 + 15);
-  };
+        // Draw the text
+        ctx.fillStyle = 'white';
+        ctx.font = 'bold 50px Arial';
+        ctx.fillText(outcome, canvas.width / 2 - ctx.measureText(outcome).width / 2, canvas.height / 2 + 15);
+      };
+    }
+  }, [outcome]);
 
   const flipCoin = () => {
     if (spinning) return;
@@ -49,19 +55,13 @@ const HeadsOrTails: React.FC = () => {
 
     const spinDuration = 1000; // duration of the spin in ms
     const outcomes = ['Heads', 'Tails'];
-    const outcome = outcomes[Math.floor(Math.random() * outcomes.length)];
+    const result = outcomes[Math.floor(Math.random() * outcomes.length)];
 
     setTimeout(() => {
-      setOutcome(outcome);
+      setOutcome(result);
       setSpinning(false);
     }, spinDuration);
   };
-
-  useEffect(() => {
-    if (outcome) {
-      drawCoin(outcome);
-    }
-  }, [outcome]);
 
   return (
     <Center minH="100vh" flexDirection="column" p={8}>
