@@ -15,6 +15,12 @@ const HeadsOrTails: React.FC = () => {
   const [spinning, setSpinning] = useState<boolean>(false);
   const [outcome, setOutcome] = useState<string | null>(null);
 
+  const headsImage = new Image();
+  headsImage.src = 'Heads.png';
+
+  const tailsImage = new Image();
+  tailsImage.src = 'Tails.png';
+
   const drawCoin = (outcome: string) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -23,15 +29,16 @@ const HeadsOrTails: React.FC = () => {
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Draw the coin
-    ctx.beginPath();
-    ctx.arc(canvas.width / 2, canvas.height / 2, canvas.width / 2, 0, 2 * Math.PI);
-    ctx.closePath();
-    ctx.fillStyle = 'gold';
-    ctx.fill();
+    const image = outcome === 'Heads' ? headsImage : tailsImage;
+
+    // Draw the coin image
+    ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+    // Add blur effect
+    ctx.filter = 'blur(2px)';
 
     // Draw the text
-    ctx.fillStyle = 'black';
+    ctx.fillStyle = 'white';
     ctx.font = 'bold 50px Arial';
     ctx.fillText(outcome, canvas.width / 2 - ctx.measureText(outcome).width / 2, canvas.height / 2 + 15);
   };
