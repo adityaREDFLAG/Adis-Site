@@ -6,6 +6,7 @@ import {
   Center,
   Heading,
   VStack,
+  Text,
 } from '@chakra-ui/react';
 import { NextSeo } from 'next-seo';
 
@@ -32,11 +33,15 @@ const HeadsOrTails: React.FC = () => {
       image.onload = () => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         
-        // Add blur effect
-        ctx.filter = 'blur(2px)';
+        // Remove blur effect
+        ctx.filter = 'none';
 
         // Draw the coin image
         ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+      };
+
+      image.onerror = () => {
+        console.error(`Failed to load image: ${image.src}`);
       };
     }
   }, [outcome]);
