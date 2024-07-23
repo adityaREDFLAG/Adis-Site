@@ -6,7 +6,6 @@ import {
   Center,
   Heading,
   VStack,
-  Text,
 } from '@chakra-ui/react';
 import { NextSeo } from 'next-seo';
 
@@ -22,8 +21,6 @@ const HeadsOrTails: React.FC = () => {
       const ctx = canvas.getContext('2d');
       if (!ctx) return;
 
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
       const headsImage = new Image();
       const tailsImage = new Image();
 
@@ -35,16 +32,11 @@ const HeadsOrTails: React.FC = () => {
       image.onload = () => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         
-        // Draw the coin image
-        ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
-
         // Add blur effect
         ctx.filter = 'blur(2px)';
 
-        // Draw the text
-        ctx.fillStyle = 'white';
-        ctx.font = 'bold 50px Arial';
-        ctx.fillText(outcome, canvas.width / 2 - ctx.measureText(outcome).width / 2, canvas.height / 2 + 15);
+        // Draw the coin image
+        ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
       };
     }
   }, [outcome]);
