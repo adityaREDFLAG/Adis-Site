@@ -15,7 +15,7 @@ const SpeedTest = () => {
       const startTime = Date.now();
 
       // Fetch a large file to measure download speed
-      const response = await fetch('https://speed.hetzner.de/100MB.bin');
+      const response = await fetch('https://ash-speed.hetzner.com/1GB.bin');
       if (!response.ok) throw new Error('Network response was not ok');
 
       const blob = await response.blob();
