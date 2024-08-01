@@ -1,10 +1,16 @@
 import React, { useState } from 'react';
-import { Box, Center, Heading, Text, VStack, Button, Spinner } from '@chakra-ui/react';
+import { Box, Center, Heading, Text, VStack, Button, Spinner, useColorMode } from '@chakra-ui/react';
 
 const SpeedTest = () => {
-  const [speed, setSpeed] = useState(null);
-  const [testing, setTesting] = useState(false);
-  const [error, setError] = useState(null);
+  const [speed, setSpeed] = useState<number | null>(null);
+  const [testing, setTesting] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const { colorMode } = useColorMode();
+  
+  const bgColor = { light: 'gray.50', dark: 'gray.900' };
+  const textColor = { light: 'red.500', dark: 'red.200' };
+  const boxBgColor = { light: 'red.100', dark: 'red.700' };
+  const buttonBgColor = { light: 'yellow.400', dark: 'yellow.300' };
 
   const testSpeed = async () => {
     setTesting(true);
@@ -14,18 +20,15 @@ const SpeedTest = () => {
     try {
       const startTime = Date.now();
 
-      // Fetch a large file to measure download speed
-      const response = await fetch('https://ash-speed.hetzner.com/1GB.bin');
+      // Fetch a large amount of dummy data
+      const response = await fetch('https://jsonplaceholder.typicode.com/posts');
       if (!response.ok) throw new Error('Network response was not ok');
 
-      const blob = await response.blob();
+      const data = await response.json();
       const endTime = Date.now();
 
-      const duration = (endTime - startTime) / 1000; // Time in seconds
-      const dataSize = blob.size / (1024 * 1024); // Size in MB
-
-      const downloadSpeed = dataSize / duration; // Speed in MBps
-      setSpeed(downloadSpeed);
+      const duration = endTime - startTime; // Time in milliseconds
+      setSpeed(duration);
     } catch (err) {
       setError('Failed to measure speed. Please try again.');
     }
@@ -34,17 +37,20 @@ const SpeedTest = () => {
   };
 
   return (
-    <Center minH="100vh" flexDirection="column" p={8} bg="#1A202C">
-      <Box bg="#2D3748" p={8} borderRadius="lg" boxShadow="xl" width="100%" maxWidth="500px">
-        <Heading mb={4} color="#E53E3E" textAlign="center">Internet Speed Test</Heading>
+    <Center minH="100vh" flexDirection="column" p={8} bg={bgColor[colorMode]}>
+      <Box bg={boxBgColor[colorMode]} p={8} borderRadius="lg" shadow="md">
+        <Heading mb={4} color={textColor[colorMode]}>Internet Speed Test</Heading>
         <VStack spacing={4}>
-          {speed !== null && (
-            <Text fontSize="3xl" color="white" textAlign="center">
-              Download Speed: {speed.toFixed(2)} MBps
-            </Text>
-          )}
-          {error && <Text color="#E53E3E" textAlign="center">{error}</Text>}
-          <Button onClick={testSpeed} isDisabled={testing} colorScheme="red" size="lg">
+          <Text fontSize="8xl" color={textColor[colorMode]}>
+            {speed !== null ? `${speed} ms` : '0 ms'}
+          </Text>
+          {error && <Text color="red.500">{error}</Text>}
+          <Button
+            onClick={testSpeed}
+            isDisabled={testing}
+            bg={buttonBgColor[colorMode]}
+            size="lg"
+          >
             {testing ? <Spinner size="lg" /> : 'Test Speed'}
           </Button>
         </VStack>
