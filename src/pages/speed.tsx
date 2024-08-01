@@ -34,17 +34,17 @@ const SpeedTest = () => {
   };
 
   return (
-    <Center minH="100vh" flexDirection="column" p={8} bg="#f0f4f8">
-      <Box bg="#FF4545" p={8} borderRadius="lg" boxShadow="xl">
-        <Heading mb={4} color="white">Internet Speed Test</Heading>
+    <Center minH="100vh" flexDirection="column" p={8} bg="#1A202C">
+      <Box bg="#2D3748" p={8} borderRadius="lg" boxShadow="xl" width="100%" maxWidth="500px">
+        <Heading mb={4} color="#E53E3E" textAlign="center">Internet Speed Test</Heading>
         <VStack spacing={4}>
           {speed !== null && (
-            <Text fontSize="3xl" color="white">
+            <Text fontSize="3xl" color="white" textAlign="center">
               Download Speed: {speed.toFixed(2)} MBps
             </Text>
           )}
-          {error && <Text color="red.500">{error}</Text>}
-          <Button onClick={testSpeed} isDisabled={testing} colorScheme="yellow" size="lg">
+          {error && <Text color="#E53E3E" textAlign="center">{error}</Text>}
+          <Button onClick={testSpeed} isDisabled={testing} colorScheme="red" size="lg">
             {testing ? <Spinner size="lg" /> : 'Test Speed'}
           </Button>
         </VStack>
