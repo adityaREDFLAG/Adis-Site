@@ -12,17 +12,20 @@ const SpeedTest = () => {
     setError(null);
 
     try {
-      const response = await fetch('/api/speedtest');
-      const data = await response.json();
+      const startTime = Date.now();
 
-      if (data.error) {
-        setError(data.error);
-      } else {
-        // Assuming the API returns an array of servers with the 'latency' and 'download' speed information
-        const speedData = data[0];
-        const downloadSpeed = speedData.download / 125000; // Convert from bits per second to MBps
-        setSpeed(downloadSpeed);
-      }
+      // Fetch a large file to measure download speed
+      const response = await fetch('https://speed.hetzner.de/100MB.bin');
+      if (!response.ok) throw new Error('Network response was not ok');
+
+      const blob = await response.blob();
+      const endTime = Date.now();
+
+      const duration = (endTime - startTime) / 1000; // Time in seconds
+      const dataSize = blob.size / (1024 * 1024); // Size in MB
+
+      const downloadSpeed = dataSize / duration; // Speed in MBps
+      setSpeed(downloadSpeed);
     } catch (err) {
       setError('Failed to measure speed. Please try again.');
     }
@@ -31,15 +34,21 @@ const SpeedTest = () => {
   };
 
   return (
-    <Center minH="100vh" flexDirection="column" p={8} bg="white">
-      <Heading mb={4}>Internet Speed Test</Heading>
-      <VStack spacing={4}>
-        {speed !== null && <Text fontSize="3xl">Download Speed: {speed.toFixed(2)} MBps</Text>}
-        {error && <Text color="red.500">{error}</Text>}
-        <Button onClick={testSpeed} isDisabled={testing} colorScheme="orange" size="lg">
-          {testing ? <Spinner size="lg" /> : 'Test Speed'}
-        </Button>
-      </VStack>
+    <Center minH="100vh" flexDirection="column" p={8} bg="#f0f4f8">
+      <Box bg="#FF4545" p={8} borderRadius="lg" boxShadow="xl">
+        <Heading mb={4} color="white">Internet Speed Test</Heading>
+        <VStack spacing={4}>
+          {speed !== null && (
+            <Text fontSize="3xl" color="white">
+              Download Speed: {speed.toFixed(2)} MBps
+            </Text>
+          )}
+          {error && <Text color="red.500">{error}</Text>}
+          <Button onClick={testSpeed} isDisabled={testing} colorScheme="yellow" size="lg">
+            {testing ? <Spinner size="lg" /> : 'Test Speed'}
+          </Button>
+        </VStack>
+      </Box>
     </Center>
   );
 };
