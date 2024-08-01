@@ -21,11 +21,8 @@ const SpeedTest = () => {
       const data = await response.json();
       const endTime = Date.now();
 
-      const duration = (endTime - startTime) / 1000; // Time in seconds
-      const dataSize = JSON.stringify(data).length / (1024 * 1024); // Size in MB
-
-      const speed = dataSize / duration; // Speed in MBps
-      setSpeed(speed);
+      const duration = endTime - startTime; // Time in milliseconds
+      setSpeed(duration);
     } catch (err) {
       setError('Failed to measure speed. Please try again.');
     }
@@ -34,20 +31,22 @@ const SpeedTest = () => {
   };
 
   return (
-    <Center minH="100vh" flexDirection="column" p={8} bg="white">
-      <Heading mb={4}>Speed Test</Heading>
+    <Center minH="100vh" flexDirection="column" p={8} bg="#1a202c">
+      <Heading mb={4} color="#FF4545">Speed Test</Heading>
       <VStack spacing={4}>
         <Text fontSize="8xl" color="gray.300">
-          {speed !== null ? speed.toFixed(2) : 0}
+          {speed !== null ? `${speed} ms` : '0 ms'}
         </Text>
         {error && <Text color="red.500">{error}</Text>}
         <Button
           onClick={testSpeed}
           isDisabled={testing}
-          colorScheme="orange"
+          bg="#FF4545"
+          color="white"
           size="lg"
+          _hover={{ bg: "#FF4545" }}
         >
-          {testing ? <Spinner size="lg" /> : 'Test Again'}
+          {testing ? <Spinner size="lg" color="white" /> : 'Test Again'}
         </Button>
       </VStack>
     </Center>
