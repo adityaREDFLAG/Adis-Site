@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Box, Center, Heading, Text, VStack, Button, Spinner } from '@chakra-ui/react';
-import speedTest from 'speedtest-net';
 
 const SpeedTest = () => {
   const [speed, setSpeed] = useState(null);
