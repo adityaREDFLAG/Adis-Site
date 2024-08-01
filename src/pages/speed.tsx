@@ -1,28 +1,32 @@
 import React, { useState } from 'react';
 import { Box, Center, Heading, Text, VStack, Button, Spinner } from '@chakra-ui/react';
+import speedTest from 'speedtest-net';
 
 const SpeedTest = () => {
-  const [speed, setSpeed] = useState<number | null>(null);
-  const [testing, setTesting] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+  const [speed, setSpeed] = useState(null);
+  const [uploadSpeed, setUploadSpeed] = useState(null);
+  const [ping, setPing] = useState(null);
+  const [testing, setTesting] = useState(false);
+  const [error, setError] = useState(null);
 
   const testSpeed = async () => {
     setTesting(true);
     setSpeed(null);
+    setUploadSpeed(null);
+    setPing(null);
     setError(null);
 
     try {
-      const startTime = Date.now();
+      const result = await fetch('/api/speedtest');
+      const data = await result.json();
 
-      // Fetch a large amount of dummy data
-      const response = await fetch('https://jsonplaceholder.typicode.com/posts');
-      if (!response.ok) throw new Error('Network response was not ok');
-
-      const data = await response.json();
-      const endTime = Date.now();
-
-      const duration = endTime - startTime; // Time in milliseconds
-      setSpeed(duration);
+      if (data.error) {
+        setError(data.error);
+      } else {
+        setSpeed(data.download.bandwidth / 125000); // Convert from bits per second to MBps
+        setUploadSpeed(data.upload.bandwidth / 125000); // Convert from bits per second to MBps
+        setPing(data.ping.latency);
+      }
     } catch (err) {
       setError('Failed to measure speed. Please try again.');
     }
@@ -31,22 +35,15 @@ const SpeedTest = () => {
   };
 
   return (
-    <Center minH="100vh" flexDirection="column" p={8} bg="#1a202c">
-      <Heading mb={4} color="#FF4545">Speed Test</Heading>
+    <Center minH="100vh" flexDirection="column" p={8} bg="white">
+      <Heading mb={4}>Internet Speed Test</Heading>
       <VStack spacing={4}>
-        <Text fontSize="8xl" color="gray.300">
-          {speed !== null ? `${speed} ms` : '0 ms'}
-        </Text>
+        {speed !== null && <Text fontSize="3xl">Download Speed: {speed.toFixed(2)} MBps</Text>}
+        {uploadSpeed !== null && <Text fontSize="3xl">Upload Speed: {uploadSpeed.toFixed(2)} MBps</Text>}
+        {ping !== null && <Text fontSize="3xl">Ping: {ping} ms</Text>}
         {error && <Text color="red.500">{error}</Text>}
-        <Button
-          onClick={testSpeed}
-          isDisabled={testing}
-          bg="#FF4545"
-          color="white"
-          size="lg"
-          _hover={{ bg: "#FF4545" }}
-        >
-          {testing ? <Spinner size="lg" color="white" /> : 'Test Again'}
+        <Button onClick={testSpeed} isDisabled={testing} colorScheme="orange" size="lg">
+          {testing ? <Spinner size="lg" /> : 'Test Speed'}
         </Button>
       </VStack>
     </Center>
