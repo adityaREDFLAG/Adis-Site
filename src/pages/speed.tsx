@@ -37,25 +37,27 @@ const SpeedTest = () => {
   };
 
   return (
-    <Center minH="100vh" flexDirection="column" p={8} bg={bgColor[colorMode]}>
-      <Box bg={boxBgColor[colorMode]} p={8} borderRadius="lg" shadow="md">
-        <Heading mb={4} color={textColor[colorMode]}>Internet Speed Test</Heading>
-        <VStack spacing={4}>
-          <Text fontSize="8xl" color={textColor[colorMode]}>
-            {speed !== null ? `${speed} ms` : '0 ms'}
-          </Text>
-          {error && <Text color="red.500">{error}</Text>}
-          <Button
-            onClick={testSpeed}
-            isDisabled={testing}
-            bg={buttonBgColor[colorMode]}
-            size="lg"
-          >
-            {testing ? <Spinner size="lg" /> : 'Test Speed'}
-          </Button>
-        </VStack>
-      </Box>
-    </Center>
+    <Box minH="100vh" bg={bgColor[colorMode]} p={8}>
+      <Center flexDirection="column" minH="100vh">
+        <Box bg={boxBgColor[colorMode]} p={8} borderRadius="lg" shadow="md">
+          <Heading mb={4} color={textColor[colorMode]}>Internet Speed Test</Heading>
+          <VStack spacing={4}>
+            <Text fontSize="8xl" color={textColor[colorMode]}>
+              {speed !== null ? `${speed} ms` : '0 ms'}
+            </Text>
+            {error && <Text color="red.500">{error}</Text>}
+            <Button
+              onClick={testSpeed}
+              isDisabled={testing}
+              bg={buttonBgColor[colorMode]}
+              size="lg"
+            >
+              {testing ? <Spinner size="lg" /> : 'Test Speed'}
+            </Button>
+          </VStack>
+        </Box>
+      </Center>
+    </Box>
   );
 };
 
