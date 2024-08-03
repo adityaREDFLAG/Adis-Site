@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { Box, Center, Heading, Text, VStack, Button, Spinner, useColorMode } from '@chakra-ui/react';
+import { NextSeo } from 'next-seo';
+import { Center, Box, Heading, Text, Button, VStack, Spinner, useColorMode } from '@chakra-ui/react';
+import type { NextPage } from 'next';
 
-const SpeedTest = () => {
+const SpeedTest: NextPage = () => {
   const [speed, setSpeed] = useState<number | null>(null);
   const [testing, setTesting] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -28,7 +30,11 @@ const SpeedTest = () => {
       const endTime = Date.now();
 
       const duration = endTime - startTime; // Time in milliseconds
-      setSpeed(duration);
+      const dataSizeInBytes = JSON.stringify(data).length; // Size in bytes
+      const durationInSeconds = duration / 1000; // Convert milliseconds to seconds
+      const speedInBps = dataSizeInBytes / durationInSeconds * 8; // Convert bytes to bits and calculate bits per second
+
+      setSpeed(speedInBps);
     } catch (err) {
       setError('Failed to measure speed. Please try again.');
     }
@@ -36,28 +42,39 @@ const SpeedTest = () => {
     setTesting(false);
   };
 
+  const formatSpeed = (speed: number | null) => {
+    if (speed === null) return '0 bps';
+    if (speed >= 1e9) return `${(speed / 1e9).toFixed(2)} Gbps`;
+    if (speed >= 1e6) return `${(speed / 1e6).toFixed(2)} Mbps`;
+    if (speed >= 1e3) return `${(speed / 1e3).toFixed(2)} Kbps`;
+    return `${speed.toFixed(2)} bps`;
+  };
+
   return (
-    <Box minH="100vh" bg={bgColor[colorMode]} p={8}>
-      <Center flexDirection="column" minH="100vh">
-        <Box bg={boxBgColor[colorMode]} p={8} borderRadius="lg" shadow="md">
-          <Heading mb={4} color={textColor[colorMode]}>Internet Speed Test</Heading>
-          <VStack spacing={4}>
-            <Text fontSize="8xl" color={textColor[colorMode]}>
-              {speed !== null ? `${speed} ms` : '0 ms'}
-            </Text>
-            {error && <Text color="red.500">{error}</Text>}
-            <Button
-              onClick={testSpeed}
-              isDisabled={testing}
-              bg={buttonBgColor[colorMode]}
-              size="lg"
-            >
-              {testing ? <Spinner size="lg" /> : 'Test Speed'}
-            </Button>
-          </VStack>
-        </Box>
-      </Center>
-    </Box>
+    <>
+      <NextSeo title="Internet Speed Test" titleTemplate="%s" />
+      <Box minH="100vh" bg={bgColor[colorMode]} p={8}>
+        <Center flexDirection="column" minH="100vh">
+          <Box bg={boxBgColor[colorMode]} p={8} borderRadius="lg" shadow="md">
+            <Heading mb={4} color={textColor[colorMode]}>Internet Speed Test</Heading>
+            <VStack spacing={4}>
+              <Text fontSize="8xl" color={textColor[colorMode]}>
+                {formatSpeed(speed)}
+              </Text>
+              {error && <Text color="red.500">{error}</Text>}
+              <Button
+                onClick={testSpeed}
+                isDisabled={testing}
+                bg={buttonBgColor[colorMode]}
+                size="lg"
+              >
+                {testing ? <Spinner size="lg" /> : 'Test Speed'}
+              </Button>
+            </VStack>
+          </Box>
+        </Center>
+      </Box>
+    </>
   );
 };
 
