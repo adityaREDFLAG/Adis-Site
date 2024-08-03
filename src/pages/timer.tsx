@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { NextSeo } from 'next-seo';
-import { Center, Box, Heading, Input, Button, VStack, HStack, Text, useColorMode, useColorModeValue } from '@chakra-ui/react';
+import { Center, Box, Heading, Input, Button, VStack, HStack, Text, useColorModeValue } from '@chakra-ui/react';
 import type { NextPage } from 'next';
 
 const Timer: NextPage = () => {
@@ -9,9 +9,11 @@ const Timer: NextPage = () => {
   const [seconds, setSeconds] = useState<number>(0);
   const [timeLeft, setTimeLeft] = useState<number | null>(null);
   const [isRunning, setIsRunning] = useState<boolean>(false);
-  const { toggleColorMode } = useColorMode();
-  const bg = useColorModeValue('gray.50', 'gray.900');
+  const bg = useColorModeValue('gray.100', 'gray.800');
   const textColor = useColorModeValue('black', 'white');
+  const boxBg = useColorModeValue('white', 'gray.700');
+  const buttonBg = "#FF4545"; // consistent button background color
+  const buttonTextColor = "white"; // consistent button text color
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -54,7 +56,7 @@ const Timer: NextPage = () => {
     <>
       <NextSeo title="Timer" titleTemplate="%s" />
       <Center minH="100vh" p={8} bg={bg} color={textColor}>
-        <Box textAlign="center" p={4} borderWidth={1} borderRadius="lg" boxShadow="lg" bg={useColorModeValue('white', 'gray.700')}>
+        <Box textAlign="center" p={4} borderWidth={1} borderRadius="lg" boxShadow="lg" bg={boxBg}>
           <Heading as="h1" size="xl" mb={6}>
             Timer
           </Heading>
@@ -84,19 +86,16 @@ const Timer: NextPage = () => {
             </Text>
           </VStack>
           <HStack spacing={4}>
-            <Button colorScheme="blue" onClick={startTimer} isDisabled={isRunning}>
+            <Button onClick={startTimer} isDisabled={isRunning} bg={buttonBg} color={buttonTextColor}>
               Start
             </Button>
-            <Button colorScheme="red" onClick={stopTimer} isDisabled={!isRunning}>
+            <Button onClick={stopTimer} isDisabled={!isRunning} bg={buttonBg} color={buttonTextColor}>
               Stop
             </Button>
-            <Button colorScheme="yellow" onClick={resetTimer}>
+            <Button onClick={resetTimer} bg={buttonBg} color={buttonTextColor}>
               Reset
             </Button>
           </HStack>
-          <Button mt={4} onClick={toggleColorMode}>
-            Toggle {useColorModeValue('Dark', 'Light')} Mode
-          </Button>
         </Box>
       </Center>
     </>
