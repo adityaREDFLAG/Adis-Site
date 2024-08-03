@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { NextSeo } from 'next-seo';
-import { Center, Box, Heading, Input, Button, VStack, HStack, Text } from '@chakra-ui/react';
+import { Center, Box, Heading, Input, Button, VStack, HStack, Text, useColorMode, useColorModeValue } from '@chakra-ui/react';
 import type { NextPage } from 'next';
 
 const Timer: NextPage = () => {
@@ -9,6 +9,9 @@ const Timer: NextPage = () => {
   const [seconds, setSeconds] = useState<number>(0);
   const [timeLeft, setTimeLeft] = useState<number | null>(null);
   const [isRunning, setIsRunning] = useState<boolean>(false);
+  const { toggleColorMode } = useColorMode();
+  const bg = useColorModeValue('gray.50', 'gray.900');
+  const textColor = useColorModeValue('black', 'white');
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -50,8 +53,8 @@ const Timer: NextPage = () => {
   return (
     <>
       <NextSeo title="Timer" titleTemplate="%s" />
-      <Center minH="100vh" p={8} bg="gray.50">
-        <Box textAlign="center" p={4} borderWidth={1} borderRadius="lg" boxShadow="lg" bg="white">
+      <Center minH="100vh" p={8} bg={bg} color={textColor}>
+        <Box textAlign="center" p={4} borderWidth={1} borderRadius="lg" boxShadow="lg" bg={useColorModeValue('white', 'gray.700')}>
           <Heading as="h1" size="xl" mb={6}>
             Timer
           </Heading>
@@ -91,6 +94,9 @@ const Timer: NextPage = () => {
               Reset
             </Button>
           </HStack>
+          <Button mt={4} onClick={toggleColorMode}>
+            Toggle {useColorModeValue('Dark', 'Light')} Mode
+          </Button>
         </Box>
       </Center>
     </>
