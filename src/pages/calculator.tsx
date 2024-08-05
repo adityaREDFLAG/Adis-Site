@@ -120,4 +120,4 @@ const App = () => {
   );
 };
 
-export default calculator;
+export default Calculator;
