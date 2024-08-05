@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NextSeo } from 'next-seo';
 import { Center, Box, Heading, Text, Button, VStack, Spinner, useColorMode } from '@chakra-ui/react';
 import type { NextPage } from 'next';
@@ -19,20 +19,24 @@ const SpeedTest: NextPage = () => {
     setSpeed(null);
     setError(null);
 
+    const testDuration = 10 * 1000; // 10 seconds
+    const testFileUrl = 'https://jsonplaceholder.typicode.com/posts';
+
     try {
       const startTime = Date.now();
+      const endTime = startTime + testDuration;
+      let bytesDownloaded = 0;
 
-      // Fetch a large amount of dummy data
-      const response = await fetch('https://jsonplaceholder.typicode.com/posts');
-      if (!response.ok) throw new Error('Network response was not ok');
+      while (Date.now() < endTime) {
+        const response = await fetch(testFileUrl);
+        if (!response.ok) throw new Error('Network response was not ok');
+        const data = await response.json();
+        bytesDownloaded += JSON.stringify(data).length;
+      }
 
-      const data = await response.json();
-      const endTime = Date.now();
-
-      const duration = endTime - startTime; // Time in milliseconds
-      const dataSizeInBytes = JSON.stringify(data).length; // Size in bytes
+      const duration = Date.now() - startTime; // Total time in milliseconds
       const durationInSeconds = duration / 1000; // Convert milliseconds to seconds
-      const speedInBps = dataSizeInBytes / durationInSeconds * 8; // Convert bytes to bits and calculate bits per second
+      const speedInBps = bytesDownloaded / durationInSeconds * 8; // Convert bytes to bits and calculate bits per second
 
       setSpeed(speedInBps);
     } catch (err) {
